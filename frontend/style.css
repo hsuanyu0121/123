@@ -440,6 +440,34 @@ h3 {
   line-height: 1.4;
 }
 
+/* Heat Recommendations */
+.heat-recommendations {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.heat-recommendations h5 {
+  margin: 0 0 12px 0;
+  color: #1f2937;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.heat-recommendations ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.heat-recommendations li {
+  margin-bottom: 6px;
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .live-data-head {
   display: flex;
   gap: 12px;

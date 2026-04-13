@@ -18,14 +18,14 @@ const liveHottestCityValue = document.getElementById("liveHottestCityValue");
 const liveDataTableBody = document.getElementById("liveDataTableBody");
 
 // Location selector elements
-const locationSelector = document.getElementById("locationSelector");
+const locationSelector = document.getElementById("locationSelect");
 const personalWeatherCard = document.getElementById("personalWeatherCard");
 const personalLocationName = document.getElementById("personalLocationName");
-const personalTempValue = document.getElementById("personalTempValue");
-const personalRhValue = document.getElementById("personalRhValue");
-const personalHeatValue = document.getElementById("personalHeatValue");
-const personalRiskLevel = document.getElementById("personalRiskLevel");
-const personalHeatAlert = document.getElementById("personalHeatAlert");
+const personalTempValue = document.getElementById("personalTemp");
+const personalRhValue = document.getElementById("personalHumidity");
+const personalHeatValue = document.getElementById("personalHeatIndex");
+const personalRiskLevel = document.getElementById("stressLevel");
+const personalHeatAlert = document.getElementById("heatStressAlert");
 const personalRecommendations = document.getElementById("personalRecommendations");
 
 const TRANSLATIONS = {
@@ -131,6 +131,14 @@ const TRANSLATIONS = {
     quizTitle: "Risk Perception Quiz",
     quizDesc: "Answer these questions to see if there's a gap between your perceived risk and actual risk of heat-related illness.",
     submitQuiz: "Submit Quiz",
+    selectLocation: "Select your location:",
+    chooseLocation: "Choose your location...",
+    yourLocationWeather: "Your Location Weather",
+    temperature: "Temperature",
+    humidity: "Humidity",
+    heatIndex: "Heat Index",
+    heatStress: "Heat Stress",
+    recommendations: "Recommendations",
   },
   zh: {
     heroEyebrow: "高溫與健康重點",
@@ -233,6 +241,14 @@ const TRANSLATIONS = {
     quizTitle: "風險認知測驗",
     quizDesc: "回答這些問題，看看你對熱相關疾病的認知風險與實際風險是否有落差。",
     submitQuiz: "提交測驗",
+    selectLocation: "選擇您的位置：",
+    chooseLocation: "選擇您的位置...",
+    yourLocationWeather: "您的位置天氣",
+    temperature: "氣溫",
+    humidity: "濕度",
+    heatIndex: "熱指數",
+    heatStress: "熱壓力",
+    recommendations: "建議",
   },
 };
 
@@ -770,9 +786,15 @@ function renderPersonalWeatherCard() {
 
   // Update heat alert
   if (personalHeatAlert) {
-    const alertText = getHeatAlertText(locationData.heatRiskLevel);
-    personalHeatAlert.textContent = alertText;
-    personalHeatAlert.className = `heat-alert ${getHeatAlertClass(locationData.heatRiskLevel)}`;
+    const alertElement = document.getElementById("heatStressAlert");
+    const alertTitle = document.getElementById("alertTitle");
+    const alertMessage = document.getElementById("alertMessage");
+
+    if (alertElement && alertTitle && alertMessage) {
+      alertElement.style.display = "block";
+      alertTitle.textContent = heatStressData?.description || getHeatAlertText(locationData.heatRiskLevel);
+      alertMessage.textContent = getHeatAlertDescription(locationData.heatRiskLevel);
+    }
   }
 
   // Update recommendations
@@ -816,27 +838,27 @@ function getHeatAlertClass(level) {
   }
 }
 
-function getHeatRecommendations(level) {
-  const recommendations = {
+function getHeatAlertDescription(level) {
+  const descriptions = {
     en: {
-      low: ["Stay hydrated with water", "Wear light, breathable clothing"],
-      caution: ["Stay hydrated with water", "Wear light, breathable clothing", "Avoid prolonged sun exposure"],
-      extreme_caution: ["Stay hydrated with water", "Wear light, breathable clothing", "Avoid prolonged sun exposure", "Take frequent breaks in shade"],
-      danger: ["Stay hydrated with water", "Wear light, breathable clothing", "Avoid prolonged sun exposure", "Take frequent breaks in shade", "Limit outdoor activities during peak heat hours"],
-      extreme_danger: ["Stay hydrated with water", "Wear light, breathable clothing", "Avoid prolonged sun exposure", "Take frequent breaks in shade", "Limit outdoor activities during peak heat hours", "Seek air-conditioned environments", "Monitor for heat illness symptoms"],
-      unknown: ["Stay hydrated with water", "Monitor local heat advisories"]
+      low: "Low heat stress conditions. Stay hydrated and monitor weather changes.",
+      caution: "Caution advised. Take preventive measures to avoid heat-related issues.",
+      extreme_caution: "Extreme caution required. Reduce outdoor activities and stay in cool environments.",
+      danger: "Danger level heat stress. Limit outdoor exposure and seek shade frequently.",
+      extreme_danger: "Extreme danger. Avoid all outdoor activities and stay in air-conditioned spaces.",
+      unknown: "Heat conditions unknown. Monitor local weather advisories."
     },
     zh: {
-      low: ["補充足夠水分", "穿著輕薄透氣衣物"],
-      caution: ["補充足夠水分", "穿著輕薄透氣衣物", "避免長時間日曬"],
-      extreme_caution: ["補充足夠水分", "穿著輕薄透氣衣物", "避免長時間日曬", "經常在陰涼處休息"],
-      danger: ["補充足夠水分", "穿著輕薄透氣衣物", "避免長時間日曬", "經常在陰涼處休息", "在高溫時段減少戶外活動"],
-      extreme_danger: ["補充足夠水分", "穿著輕薄透氣衣物", "避免長時間日曬", "經常在陰涼處休息", "在高溫時段減少戶外活動", "尋找空調環境", "注意熱傷害症狀"],
-      unknown: ["補充足夠水分", "關注本地高溫警報"]
+      low: "低溫壓力狀況。保持水分補充並監測天氣變化。",
+      caution: "注意級別。採取預防措施避免熱相關問題。",
+      extreme_caution: "高度注意。減少戶外活動並待在涼爽環境。",
+      danger: "危險級別熱壓力。限制戶外暴露並經常尋找陰涼處。",
+      extreme_danger: "極度危險。避免所有戶外活動並待在空調環境。",
+      unknown: "高溫狀況未知。關注本地天氣警報。"
     }
   };
 
-  return recommendations[currentLanguage]?.[level] || recommendations.en[level] || recommendations.en.unknown;
+  return descriptions[currentLanguage]?.[level] || descriptions.en[level] || descriptions.en.unknown;
 }
 
 function handleLocationChange() {
