@@ -757,6 +757,35 @@ startTaiwanHeatAutoRefresh();
 
 addMessage(t("chatGreeting"), "ai");
 
+// Chat Modal functionality
+const chatbotButton = document.getElementById("chatbotButton");
+const chatModal = document.getElementById("chatModal");
+const closeChatButton = document.getElementById("closeChatButton");
+
+function initChatModal() {
+  if (chatbotButton) {
+    chatbotButton.addEventListener("click", openChatModal);
+  }
+  if (closeChatButton) {
+    closeChatButton.addEventListener("click", closeChatModal);
+  }
+}
+
+function openChatModal() {
+  if (chatModal) {
+    chatModal.classList.add("active");
+    messageInput.focus();
+  }
+}
+
+function closeChatModal() {
+  if (chatModal) {
+    chatModal.classList.remove("active");
+  }
+}
+
+initChatModal();
+
 // Quiz functionality
 const quizButton = document.getElementById("quizButton");
 const quizModal = document.getElementById("quizModal");
@@ -767,30 +796,36 @@ const quizResult = document.getElementById("quizResult");
 
 const quizQuestions = [
   {
-    question: "How often do you check the weather forecast before going outdoors?",
-    options: ["Never", "Rarely", "Sometimes", "Often", "Always"],
-    correct: 3, // Often or Always
-    riskGap: "Many people underestimate how quickly heat conditions can change."
+    question: "How often do you check the weather/heat forecasts?",
+    options: ["Never/Rarely", "Sometimes", "Often", "Very frequently", "Always before going out"],
+    actualRisk: ["Very High", "High", "Moderate", "Low", "Very Low"],
+    realityFact: "Heat changes can happen quickly. Regular monitoring is essential."
   },
   {
-    question: "When do you think heat-related illness is most likely to occur?",
-    options: ["Morning", "Afternoon", "Evening", "Night", "Any time"],
-    correct: 4, // Any time
-    riskGap: "Heat illness can happen at any time, especially with high humidity."
+    question: "On a hot day, how many hours do you spend outdoors?",
+    options: ["Less than 1 hour", "1-2 hours", "2-4 hours", "4-6 hours", "More than 6 hours"],
+    actualRisk: ["Very Low", "Low", "Moderate", "High", "Very High"],
+    realityFact: "Extended heat exposure increases risk significantly, especially during peak hours."
   },
   {
-    question: "How much water do you drink on a hot day?",
-    options: ["Less than 1 liter", "1-2 liters", "2-3 liters", "More than 3 liters", "I don't track"],
-    correct: 2, // 2-3 liters
-    riskGap: "Dehydration is a major risk factor, but many drink less than needed."
+    question: "How much water do you drink on extremely hot days?",
+    options: ["Less than 1 liter", "1-2 liters", "2-3 liters", "3-4 liters", "More than 4 liters"],
+    actualRisk: ["Very High", "High", "Moderate", "Low", "Very Low"],
+    realityFact: "Proper hydration is critical. Most people don't drink enough in extreme heat."
   },
   {
-    question: "Which group are you in regarding heat risk?",
-    options: ["Low risk", "Moderate risk", "High risk", "Very high risk", "I don't know"],
-    correct: null, // No single correct, but awareness matters
-    riskGap: "Risk perception often doesn't match actual vulnerability."
+    question: "Do you take breaks in cool/shaded areas on hot days?",
+    options: ["Never", "Rarely", "Sometimes", "Often", "Always when needed"],
+    actualRisk: ["Very High", "High", "Moderate", "Low", "Very Low"],
+    realityFact: "Heat breaks are essential for body temperature regulation and prevent heat illness."
+  },
+  {
+    question: "How would you rate your personal heat-related illness risk?",
+    options: ["No risk at all", "Minimal risk", "Moderate risk", "Significant risk", "Very high risk"],
+    actualRisk: ["Very High (Underestimating!)", "High (Likely underestimating)", "Moderate (Reasonably aware)", "High (May be overestimating)", "Very High (Realistic assessment)"],
+    realityFact: "Most people significantly underestimate their heat risk, regardless of age or occupation."
   }
-];
+  ];
 
 function initQuiz() {
   if (quizButton) {
