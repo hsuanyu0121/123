@@ -874,32 +874,81 @@ function renderQuiz() {
 
 function submitQuizAnswers() {
   const answers = [];
-  let score = 0;
+  const riskAssessments = [];
+  
   quizQuestions.forEach((q, index) => {
     const selected = document.querySelector(`input[name="q${index}"]:checked`);
     if (selected) {
-      answers.push(parseInt(selected.value));
-      if (q.correct !== null && parseInt(selected.value) >= q.correct) {
-        score++;
-      }
+      const selectedIndex = parseInt(selected.value);
+      answers.push(selectedIndex);
+      riskAssessments.push({
+        question: index,
+        userAnswer: q.options[selectedIndex],
+        assessedRisk: q.actualRisk[selectedIndex],
+        fact: q.realityFact
+      });
     } else {
       answers.push(null);
     }
   });
 
-  const totalQuestions = quizQuestions.length;
-  const percentage = Math.round((score / totalQuestions) * 100);
-
-  let resultText = `<h3>Your Risk Perception Score: ${percentage}%</h3>`;
-  if (percentage < 50) {
-    resultText += "<p>You may have a significant gap between perceived and actual risk. Consider reviewing heat safety guidelines.</p>";
-  } else if (percentage < 80) {
-    resultText += "<p>You have moderate awareness, but there's room for improvement in recognizing heat risks.</p>";
-  } else {
-    resultText += "<p>Great! You seem well-aware of heat-related risks.</p>";
+  // Calculate risk perception gap
+  let riskGapScore = 0; // 0 = well-calibrated, positive = underestimating, negative = overestimating
+  
+  // Q1: Weather check frequency (higher is better)
+  if (answers[0] !== null) {
+    riskGapScore += (2 - answers[0]); // 2 is optimal (Often)
+  }
+  
+  // Q2: Time spent outdoors (lower is better)
+  if (answers[1] !== null) {
+    riskGapScore += (answers[1] - 2); // 2 is optimal (2-4 hours)
+  }
+  
+  // Q3: Water consumption (higher is better)
+  if (answers[2] !== null) {
+    riskGapScore += (2 - answers[2]); // 2-3 liters is optimal
+  }
+  
+  // Q4: Cool breaks (higher is better)
+  if (answers[3] !== null) {
+    riskGapScore += (4 - answers[3]); // Always is optimal
+  }
+  
+  // Q5: Self-assessment of risk
+  if (answers[4] !== null) {
+    riskGapScore += (2 - answers[4]); // Moderate is realistic
   }
 
-  resultText += "<p><strong>Key Insight:</strong> " + quizQuestions[0].riskGap + "</p>";
+  let resultText = `<h3>Your Heat Safety Awareness Assessment</h3>`;
+  
+  // Determine perception gap
+  if (riskGapScore > 5) {
+    resultText += `<p style="color: #d13a2f; font-weight: 700;"><strong>⚠️ SIGNIFICANT UNDERESTIMATION</strong></p>`;
+    resultText += `<p>You are significantly <strong>underestimating your heat risk</strong>. Your current behaviors suggest you may not be taking adequate precautions against heat-related illness.</p>`;
+  } else if (riskGapScore > 2) {
+    resultText += `<p style="color: #ff8a3d; font-weight: 700;"><strong>⚠️ MODERATE UNDERESTIMATION</strong></p>`;
+    resultText += `<p>You appear to be <strong>somewhat underestimating your risk</strong>. While you have some awareness, there's room for improvement in your heat safety practices.</p>`;
+  } else if (riskGapScore > -2) {
+    resultText += `<p style="color: #1489cc; font-weight: 700;"><strong>✓ WELL-CALIBRATED AWARENESS</strong></p>`;
+    resultText += `<p>Your risk perception appears <strong>reasonably accurate</strong>. You're taking appropriate precautions and seem aware of heat-related risks.</p>`;
+  } else if (riskGapScore > -5) {
+    resultText += `<p style="color: #1489cc; font-weight: 700;"><strong>✓ CAUTIOUS APPROACH</strong></p>`;
+    resultText += `<p>You may be <strong>slightly overestimating risk</strong>, but this conservative approach is generally better for heat safety.</p>`;
+  } else {
+    resultText += `<p style="color: #1489cc; font-weight: 700;"><strong>✓ VERY CAUTIOUS</strong></p>`;
+    resultText += `<p>You are taking <strong>very comprehensive precautions</strong> against heat-related illness.</p>`;
+  }
+
+  // Add key insights
+  resultText += `<div style="margin-top: 16px; padding: 14px; background: #fff2ee; border-radius: 12px; border-left: 4px solid #f2613f;">`;
+  resultText += `<p><strong>Key Insights from your answers:</strong></p>`;
+  riskAssessments.forEach((assessment, idx) => {
+    resultText += `<p style="margin: 8px 0;"><small><strong>Q${idx + 1}:</strong> ${assessment.fact}</small></p>`;
+  });
+  resultText += `</div>`;
+  
+  resultText += `<p style="margin-top: 16px; font-size: 0.9rem; color: #5f6b7a;"><strong>Recommendation:</strong> Review the "How to Protect Yourself" section above to build better heat safety habits.</p>`;
 
   quizResult.innerHTML = resultText;
   quizResult.style.display = "block";

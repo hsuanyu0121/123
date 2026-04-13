@@ -742,3 +742,32 @@ fetchTaiwanHeatData();
 startTaiwanHeatAutoRefresh();
 
 addMessage(t("chatGreeting"), "ai");
+
+// Chat Modal functionality
+const chatbotButton = document.getElementById("chatbotButton");
+const chatModal = document.getElementById("chatModal");
+const closeChatButton = document.getElementById("closeChatButton");
+
+function initChatModal() {
+  if (chatbotButton) {
+    chatbotButton.addEventListener("click", openChatModal);
+  }
+  if (closeChatButton) {
+    closeChatButton.addEventListener("click", closeChatModal);
+  }
+}
+
+function openChatModal() {
+  if (chatModal) {
+    chatModal.classList.add("active");
+    messageInput.focus();
+  }
+}
+
+function closeChatModal() {
+  if (chatModal) {
+    chatModal.classList.remove("active");
+  }
+}
+
+initChatModal();
