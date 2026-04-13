@@ -1,0 +1,13 @@
+[build]
+  command = "cd backend && npm install"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-render-url.onrender.com/api/:splat"
+  status = 200
+  force = false
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

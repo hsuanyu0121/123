@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heat Safety Briefing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <button id="langToggle" class="lang-toggle" type="button" aria-label="Switch language">中文</button>
+
+  <div class="background-orb background-orb-left"></div>
+  <div class="background-orb background-orb-right"></div>
+
+  <main class="page">
+    <section id="hero" class="section hero reveal is-visible">
+      <div class="hero-content">
+        <p class="eyebrow" data-i18n-key="heroEyebrow">Heat and Health Briefing</p>
+        <h1 data-i18n-key="heroTitle">Heat is Not Harmless</h1>
+        <p class="lead" data-i18n-key="heroLead">You may be underestimating your risk of heat-related illness.</p>
+
+        <div class="hero-metrics">
+          <article class="metric-card">
+            <p class="metric-label" data-i18n-key="metricLabelHeatIndex">Animated heat index</p>
+            <p class="metric-value"><span id="heatNumber">29</span><span class="metric-unit">C</span></p>
+          </article>
+          <article class="metric-card">
+            <p class="metric-label" data-i18n-key="metricLabelRiskTrend">Risk trend</p>
+            <p class="metric-value" data-i18n-key="metricRiskValue">Rising</p>
+            <p class="metric-sub" data-i18n-key="metricRiskSub">Hotter nights and humidity are increasing stress on the body.</p>
+          </article>
+        </div>
+      </div>
+
+      <a class="scroll-indicator" href="#climate" data-i18n-key="scrollIndicator">Scroll to explore</a>
+    </section>
+
+    <section id="climate" class="section reveal">
+      <header class="section-header">
+        <p class="eyebrow" data-i18n-key="climateEyebrow">Climate and Risk</p>
+        <h2 data-i18n-key="climateTitle">Why Heat is Becoming More Dangerous</h2>
+      </header>
+
+      <article class="card live-data-card">
+        <div class="live-data-head">
+          <h3 data-i18n-key="liveDataTitle">Live Taiwan Heat Snapshot</h3>
+          <p id="liveDataStatus" class="live-data-status" data-i18n-key="liveLoading">Loading latest Taiwan weather data...</p>
+        </div>
+
+        <div class="live-metrics-grid">
+          <article class="live-metric-item">
+            <p data-i18n-key="liveAvgTempLabel">Avg temperature</p>
+            <strong id="liveAvgTempValue">--</strong>
+          </article>
+          <article class="live-metric-item">
+            <p data-i18n-key="liveAvgRhLabel">Avg humidity</p>
+            <strong id="liveAvgRhValue">--</strong>
+          </article>
+          <article class="live-metric-item">
+            <p data-i18n-key="liveMaxHeatLabel">Max heat index</p>
+            <strong id="liveMaxHeatValue">--</strong>
+          </article>
+          <article class="live-metric-item">
+            <p data-i18n-key="liveHottestCityLabel">Highest-risk city</p>
+            <strong id="liveHottestCityValue">--</strong>
+          </article>
+        </div>
+
+        <div class="live-table-wrap">
+          <table class="live-table" aria-label="Live Taiwan heat table">
+            <thead>
+              <tr>
+                <th data-i18n-key="liveColCity">City</th>
+                <th data-i18n-key="liveColTemp">Temp (C)</th>
+                <th data-i18n-key="liveColRh">RH (%)</th>
+                <th data-i18n-key="liveColApparent">Feels like (C)</th>
+                <th data-i18n-key="liveColHeatIndex">Heat index (C)</th>
+                <th data-i18n-key="liveColRisk">Risk</th>
+              </tr>
+            </thead>
+            <tbody id="liveDataTableBody">
+              <tr>
+                <td colspan="6" data-i18n-key="liveLoading">Loading latest Taiwan weather data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <div class="section-grid two-column">
+        <article class="card prose-card">
+          <p data-i18n-key="climateBody1">
+            Heat danger is not just about air temperature. As humidity increases, sweat evaporates more slowly,
+            and your body loses one of its most important cooling mechanisms.
+          </p>
+          <p data-i18n-key="climateBody2">
+            This means the heat index can climb far above the raw temperature reading, especially in dense urban spaces.
+          </p>
+          <p class="highlight" data-i18n-key="climateHighlight">High humidity prevents the body from cooling down efficiently.</p>
+        </article>
+
+        <article class="card chart-card">
+          <canvas id="climateChart" aria-label="Temperature and heat index chart" role="img"></canvas>
+        </article>
+      </div>
+    </section>
+
+    <section id="illness" class="section reveal">
+      <header class="section-header">
+        <p class="eyebrow" data-i18n-key="illnessEyebrow">Heat Illness Basics</p>
+        <h2 data-i18n-key="illnessTitle">What is Heat-Related Illness?</h2>
+      </header>
+
+      <div class="cards three-column">
+        <article class="card illness-card">
+          <span class="icon-badge">HC</span>
+          <h3 data-i18n-key="crampsTitle">Heat cramps</h3>
+          <p data-i18n-key="crampsDesc">Painful muscle cramps triggered by heat and heavy sweating.</p>
+          <ul>
+            <li data-i18n-key="crampsSym1">Muscle spasms in legs or abdomen</li>
+            <li data-i18n-key="crampsSym2">Heavy sweating</li>
+            <li data-i18n-key="crampsSym3">Thirst and fatigue</li>
+          </ul>
+        </article>
+
+        <article class="card illness-card">
+          <span class="icon-badge">HE</span>
+          <h3 data-i18n-key="exhaustionTitle">Heat exhaustion</h3>
+          <p data-i18n-key="exhaustionDesc">The body is struggling to cool itself, often after prolonged heat exposure.</p>
+          <ul>
+            <li data-i18n-key="exhaustionSym1">Dizziness and weakness</li>
+            <li data-i18n-key="exhaustionSym2">Nausea or headache</li>
+            <li data-i18n-key="exhaustionSym3">Cool, clammy skin</li>
+          </ul>
+        </article>
+
+        <article class="card illness-card critical">
+          <span class="icon-badge">HS</span>
+          <h3 data-i18n-key="strokeTitle">Heat stroke</h3>
+          <p data-i18n-key="strokeDesc">A medical emergency where body temperature can rise rapidly to life-threatening levels.</p>
+          <ul>
+            <li data-i18n-key="strokeSym1">Confusion or loss of consciousness</li>
+            <li data-i18n-key="strokeSym2">Hot, dry skin or no sweat</li>
+            <li data-i18n-key="strokeSym3">Rapid pulse and high body temperature</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="gap" class="section reveal">
+      <header class="section-header">
+        <p class="eyebrow" data-i18n-key="gapEyebrow">Research Highlight</p>
+        <h2 data-i18n-key="gapTitle">Are You Really Safe?</h2>
+      </header>
+
+      <div class="section-grid two-column">
+        <article class="card chart-card">
+          <canvas id="perceptionChart" aria-label="Risk perception gap chart" role="img"></canvas>
+        </article>
+
+        <article class="card gap-card">
+          <p class="stat-label" data-i18n-key="gapSignalLabel">Perception gap signal</p>
+          <p class="big-stat">62%</p>
+          <p data-i18n-key="gapSignalDesc">of people report they are not personally at risk during extreme heat.</p>
+          <p class="contrast" data-i18n-key="gapContrast">Heat-related cases are increasing every year.</p>
+          <p class="strong-statement" data-i18n-key="gapStatement">There is a gap between real risk and perceived risk.</p>
+
+          <button id="quizButton" class="quiz-button" data-i18n-key="quizButton">Take Risk Perception Quiz</button>
+
+          <div class="chips" aria-label="Higher risk groups">
+            <span class="chip" data-i18n-key="chip1">Outdoor workers</span>
+            <span class="chip" data-i18n-key="chip2">Young adults</span>
+            <span class="chip" data-i18n-key="chip3">Older adults</span>
+            <span class="chip" data-i18n-key="chip4">Athletes</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="prevention" class="section reveal">
+      <header class="section-header">
+        <p class="eyebrow" data-i18n-key="preventionEyebrow">Prevention and Action</p>
+        <h2 data-i18n-key="preventionTitle">How to Protect Yourself</h2>
+      </header>
+
+      <div class="cards action-grid">
+        <article class="card action-card"><span class="icon-badge">01</span><h3 data-i18n-key="action1Title">Drink more water</h3><p data-i18n-key="action1Desc">Hydrate steadily across the day, not only when thirsty.</p></article>
+        <article class="card action-card"><span class="icon-badge">02</span><h3 data-i18n-key="action2Title">Avoid peak heat hours</h3><p data-i18n-key="action2Desc">Reduce outdoor activity during the hottest afternoon period.</p></article>
+        <article class="card action-card"><span class="icon-badge">03</span><h3 data-i18n-key="action3Title">Check heat warnings</h3><p data-i18n-key="action3Desc">Use weather alerts to plan safer work and travel schedules.</p></article>
+        <article class="card action-card"><span class="icon-badge">04</span><h3 data-i18n-key="action4Title">Wear light clothing</h3><p data-i18n-key="action4Desc">Choose breathable fabrics and lighter colors when possible.</p></article>
+        <article class="card action-card"><span class="icon-badge">05</span><h3 data-i18n-key="action5Title">Stay in cool environments</h3><p data-i18n-key="action5Desc">Take frequent cooling breaks in shade or air-conditioned spaces.</p></article>
+      </div>
+
+      <article class="card checklist-card">
+        <h3 data-i18n-key="checklistTitle">How many are you doing?</h3>
+        <form id="preventionChecklist" class="checklist">
+          <label><input type="checkbox" name="prevention" /> <span data-i18n-key="checkItem1">Drink water every hour</span></label>
+          <label><input type="checkbox" name="prevention" /> <span data-i18n-key="checkItem2">Limit exposure from 11 AM to 3 PM</span></label>
+          <label><input type="checkbox" name="prevention" /> <span data-i18n-key="checkItem3">Review local heat alerts daily</span></label>
+          <label><input type="checkbox" name="prevention" /> <span data-i18n-key="checkItem4">Wear breathable clothes outdoors</span></label>
+          <label><input type="checkbox" name="prevention" /> <span data-i18n-key="checkItem5">Plan breaks in cool spaces</span></label>
+        </form>
+        <p class="checklist-count" id="checkCount">0/5 habits checked today</p>
+      </article>
+    </section>
+  </main>
+
+  <div id="quizModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2 data-i18n-key="quizTitle">Risk Perception Quiz</h2>
+      <p data-i18n-key="quizDesc">Answer these questions to see if there's a gap between your perceived risk and actual risk of heat-related illness.</p>
+      <div id="quizContent">
+        <!-- Quiz questions will be inserted here -->
+      </div>
+      <button id="submitQuiz" class="submit-quiz" data-i18n-key="submitQuiz">Submit Quiz</button>
+      <div id="quizResult" class="quiz-result" style="display: none;"></div>
+    </div>
+  </div>
+
+  <section class="chatbot-widget" aria-label="Heat safety chatbot">
+    <p class="chatbot-label" data-i18n-key="chatbotLabel">Ask about heat safety</p>
+    <section class="chat-container">
+      <header class="chat-header">
+        <h3 data-i18n-key="chatHeaderTitle">Heat Safety Assistant</h3>
+        <p data-i18n-key="chatHeaderDesc">Ask about symptoms, risk, and prevention.</p>
+      </header>
+
+      <div id="chatBox" class="chat-box" aria-live="polite"></div>
+
+      <form id="chatForm" class="chat-input-area">
+        <input id="messageInput" type="text" data-i18n-placeholder-key="chatPlaceholder" placeholder="Ask a heat safety question..." autocomplete="off" required />
+        <button id="sendButton" type="submit" data-i18n-key="chatSend">Send</button>
+      </form>
+    </section>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js?v=20260412e"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: chatbot-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: GEMINI_API_KEY
+        scope: build,runtime
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: NODE_ENV
+        value: production
