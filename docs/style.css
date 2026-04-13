@@ -344,7 +344,11 @@ h3 {
 
 .live-table-wrap {
   margin-top: 14px;
+  max-height: 400px;
+  overflow-y: auto;
   overflow-x: auto;
+  border: 1px solid #e6ecf3;
+  border-radius: 8px;
 }
 
 .live-table {

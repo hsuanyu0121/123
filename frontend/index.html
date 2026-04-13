@@ -46,8 +46,50 @@
 
       <article class="card live-data-card">
         <div class="live-data-head">
-          <h3 data-i18n-key="liveDataTitle">Live Taiwan Heat Snapshot</h3>
+          <h3 data-i18n-key="liveDataTitle">Live Taiwan Heat Snapshot - All Districts</h3>
           <p id="liveDataStatus" class="live-data-status" data-i18n-key="liveLoading">Loading latest Taiwan weather data...</p>
+        </div>
+
+        <!-- Location Selector -->
+        <div class="location-selector">
+          <label for="locationSelect" data-i18n-key="selectLocation">Select your location:</label>
+          <select id="locationSelect" class="location-dropdown">
+            <option value="" data-i18n-key="chooseLocation">Choose your location...</option>
+          </select>
+        </div>
+
+        <!-- Personal Location Weather -->
+        <div id="personalWeatherCard" class="personal-weather-card" style="display: none;">
+          <h4 data-i18n-key="yourLocationWeather">Your Location Weather</h4>
+          <div class="personal-metrics-grid">
+            <div class="personal-metric">
+              <span class="metric-label" data-i18n-key="temperature">Temperature</span>
+              <span class="metric-value" id="personalTemp">--°C</span>
+            </div>
+            <div class="personal-metric">
+              <span class="metric-label" data-i18n-key="humidity">Humidity</span>
+              <span class="metric-value" id="personalHumidity">--%</span>
+            </div>
+            <div class="personal-metric">
+              <span class="metric-label" data-i18n-key="heatIndex">Heat Index</span>
+              <span class="metric-value" id="personalHeatIndex">--°C</span>
+            </div>
+            <div class="personal-metric">
+              <span class="metric-label" data-i18n-key="heatStress">Heat Stress</span>
+              <span class="metric-value" id="personalHeatStress">
+                <span class="stress-level" id="stressLevel">--</span>
+              </span>
+            </div>
+          </div>
+          <div class="heat-stress-alert" id="heatStressAlert" style="display: none;">
+            <div class="alert-content">
+              <span class="alert-icon">⚠️</span>
+              <div class="alert-text">
+                <strong id="alertTitle"></strong>
+                <p id="alertMessage"></p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="live-metrics-grid">

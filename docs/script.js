@@ -34,7 +34,7 @@ const TRANSLATIONS = {
     climateBody2:
       "This means the heat index can climb far above the raw temperature reading, especially in dense urban spaces.",
     climateHighlight: "High humidity prevents the body from cooling down efficiently.",
-    liveDataTitle: "Live Taiwan Heat Snapshot",
+    liveDataTitle: "Live Taiwan Heat Snapshot - All Districts",
     liveLoading: "Loading latest Taiwan weather data...",
     liveUpdatedPrefix: "Updated",
     liveSourcePrefix: "Source",
@@ -129,7 +129,7 @@ const TRANSLATIONS = {
       "高溫風險不只看氣溫。當濕度上升，汗水蒸發會變慢，人體最重要的散熱機制就會受限。",
     climateBody2: "這代表體感溫度可能遠高於實際氣溫，尤其在都市熱島環境更明顯。",
     climateHighlight: "高濕度會讓身體難以有效降溫。",
-    liveDataTitle: "台灣即時熱風險快照",
+    liveDataTitle: "台灣即時熱風險快照 - 全區覆蓋",
     liveLoading: "正在載入台灣即時氣象資料...",
     liveUpdatedPrefix: "更新時間",
     liveSourcePrefix: "資料來源",
@@ -236,13 +236,193 @@ let taiwanHeatRefreshTimer = null;
 
 const CITY_NAME_MAP = {
   zh: {
-    Taipei: "台北",
-    Taichung: "台中",
-    Tainan: "台南",
-    Kaohsiung: "高雄",
-    Hsinchu: "新竹",
-    Hualien: "花蓮",
+    // Taipei City districts
+    "Taipei-Ximending": "台北西門町",
+    "Taipei-Xinyi": "台北信義",
+    "Taipei-Zhongzheng": "台北中正",
+    "Taipei-Datong": "台北大同",
+    "Taipei-Wanhua": "台北萬華",
+
+    // New Taipei City districts
+    "NewTaipei-Banqiao": "新北板橋",
+    "NewTaipei-Zhonghe": "新北中和",
+    "NewTaipei-Tucheng": "新北土城",
+    "NewTaipei-Xinzhuang": "新北新莊",
+    "NewTaipei-Sanchong": "新北三重",
+
+    // Taoyuan City districts
+    "Taoyuan-Taoyuan": "桃園桃園",
+    "Taoyuan-Zhongli": "桃園中壢",
+    "Taoyuan-Pingzhen": "桃園平鎮",
+    "Taoyuan-Bade": "桃園八德",
+    "Taoyuan-Daxi": "桃園大溪",
+
+    // Taichung City districts
+    "Taichung-Xitun": "台中西屯",
+    "Taichung-Nantun": "台中南屯",
+    "Taichung-Beitun": "台中北屯",
+    "Taichung-Dali": "台中大里",
+    "Taichung-Wufeng": "台中霧峰",
+
+    // Tainan City districts
+    "Tainan-Anping": "台南安平",
+    "Tainan-Xinying": "台南新營",
+    "Tainan-Yongkang": "台南永康",
+    "Tainan-Rende": "台南仁德",
+    "Tainan-Guiren": "台南歸仁",
+
+    // Kaohsiung City districts
+    "Kaohsiung-Sanzih": "高雄三民",
+    "Kaohsiung-Nanzih": "高雄楠梓",
+    "Kaohsiung-Qianzhen": "高雄前鎮",
+    "Kaohsiung-Xinxing": "高雄新興",
+    "Kaohsiung-Yancheng": "高雄鹽埕",
+
+    // Keelung City districts
+    "Keelung-Zhongzheng": "基隆中正",
+    "Keelung-Xinyi": "基隆信義",
+    "Keelung-Ren'ai": "基隆仁愛",
+
+    // Hsinchu City districts
+    "Hsinchu-Xiangshan": "新竹香山",
+    "Hsinchu-North": "新竹北區",
+    "Hsinchu-East": "新竹東區",
+
+    // Chiayi City districts
+    "Chiayi-East": "嘉義東區",
+    "Chiayi-West": "嘉義西區",
+
+    // Counties
+    "HsinchuCounty-Zhubei": "新竹縣竹北",
+    "HsinchuCounty-Hukou": "新竹縣湖口",
+    "Miaoli-Miaoli": "苗栗苗栗",
+    "Miaoli-Tongxiao": "苗栗通霄",
+    "Miaoli-Zhunan": "苗栗竹南",
+    "Changhua-Changhua": "彰化彰化",
+    "Changhua-Lukang": "彰化鹿港",
+    "Changhua-Yuanlin": "彰化員林",
+    "Nantou-Nantou": "南投南投",
+    "Nantou-Puli": "南投埔里",
+    "Nantou-Zhushan": "南投竹山",
+    "Yunlin-Douliu": "雲林斗六",
+    "Yunlin-Huwei": "雲林虎尾",
+    "Yunlin-Beigang": "雲林北港",
+    "ChiayiCounty-Budai": "嘉義縣布袋",
+    "ChiayiCounty-Dalin": "嘉義縣大林",
+    "ChiayiCounty-Xikou": "嘉義縣溪口",
+    "Pingtung-Pingtung": "屏東屏東",
+    "Pingtung-Kaohsiung": "屏東高雄",
+    "Pingtung-Chaozhou": "屏東潮州",
+    "Yilan-Yilan": "宜蘭宜蘭",
+    "Yilan-Luodong": "宜蘭羅東",
+    "Yilan-Suao": "宜蘭蘇澳",
+    "Hualien-Hualien": "花蓮花蓮",
+    "Hualien-Ji'an": "花蓮吉安",
+    "Hualien-Xincheng": "花蓮新城",
+    "Taitung-Taitung": "台東台東",
+    "Taitung-Beinan": "台東卑南",
+    "Taitung-Chishang": "台東池上",
+    "Penghu-Magong": "澎湖馬公",
+    "Penghu-Xiyu": "澎湖西嶼",
+    "Kinmen-Jinsha": "金門金沙",
+    "Kinmen-Jincheng": "金門金城",
+    "Lienchiang-Nangan": "連江南竿",
+    "Lienchiang-Beigan": "連江北竿"
   },
+  en: {
+    // Taipei City districts
+    "Taipei-Ximending": "Taipei Ximending",
+    "Taipei-Xinyi": "Taipei Xinyi",
+    "Taipei-Zhongzheng": "Taipei Zhongzheng",
+    "Taipei-Datong": "Taipei Datong",
+    "Taipei-Wanhua": "Taipei Wanhua",
+
+    // New Taipei City districts
+    "NewTaipei-Banqiao": "New Taipei Banqiao",
+    "NewTaipei-Zhonghe": "New Taipei Zhonghe",
+    "NewTaipei-Tucheng": "New Taipei Tucheng",
+    "NewTaipei-Xinzhuang": "New Taipei Xinzhuang",
+    "NewTaipei-Sanchong": "New Taipei Sanchong",
+
+    // Taoyuan City districts
+    "Taoyuan-Taoyuan": "Taoyuan Taoyuan",
+    "Taoyuan-Zhongli": "Taoyuan Zhongli",
+    "Taoyuan-Pingzhen": "Taoyuan Pingzhen",
+    "Taoyuan-Bade": "Taoyuan Bade",
+    "Taoyuan-Daxi": "Taoyuan Daxi",
+
+    // Taichung City districts
+    "Taichung-Xitun": "Taichung Xitun",
+    "Taichung-Nantun": "Taichung Nantun",
+    "Taichung-Beitun": "Taichung Beitun",
+    "Taichung-Dali": "Taichung Dali",
+    "Taichung-Wufeng": "Taichung Wufeng",
+
+    // Tainan City districts
+    "Tainan-Anping": "Tainan Anping",
+    "Tainan-Xinying": "Tainan Xinying",
+    "Tainan-Yongkang": "Tainan Yongkang",
+    "Tainan-Rende": "Tainan Rende",
+    "Tainan-Guiren": "Tainan Guiren",
+
+    // Kaohsiung City districts
+    "Kaohsiung-Sanzih": "Kaohsiung Sanzih",
+    "Kaohsiung-Nanzih": "Kaohsiung Nanzih",
+    "Kaohsiung-Qianzhen": "Kaohsiung Qianzhen",
+    "Kaohsiung-Xinxing": "Kaohsiung Xinxing",
+    "Kaohsiung-Yancheng": "Kaohsiung Yancheng",
+
+    // Keelung City districts
+    "Keelung-Zhongzheng": "Keelung Zhongzheng",
+    "Keelung-Xinyi": "Keelung Xinyi",
+    "Keelung-Ren'ai": "Keelung Ren'ai",
+
+    // Hsinchu City districts
+    "Hsinchu-Xiangshan": "Hsinchu Xiangshan",
+    "Hsinchu-North": "Hsinchu North",
+    "Hsinchu-East": "Hsinchu East",
+
+    // Chiayi City districts
+    "Chiayi-East": "Chiayi East",
+    "Chiayi-West": "Chiayi West",
+
+    // Counties
+    "HsinchuCounty-Zhubei": "Hsinchu County Zhubei",
+    "HsinchuCounty-Hukou": "Hsinchu County Hukou",
+    "Miaoli-Miaoli": "Miaoli Miaoli",
+    "Miaoli-Tongxiao": "Miaoli Tongxiao",
+    "Miaoli-Zhunan": "Miaoli Zhunan",
+    "Changhua-Changhua": "Changhua Changhua",
+    "Changhua-Lukang": "Changhua Lukang",
+    "Changhua-Yuanlin": "Changhua Yuanlin",
+    "Nantou-Nantou": "Nantou Nantou",
+    "Nantou-Puli": "Nantou Puli",
+    "Nantou-Zhushan": "Nantou Zhushan",
+    "Yunlin-Douliu": "Yunlin Douliu",
+    "Yunlin-Huwei": "Yunlin Huwei",
+    "Yunlin-Beigang": "Yunlin Beigang",
+    "ChiayiCounty-Budai": "Chiayi County Budai",
+    "ChiayiCounty-Dalin": "Chiayi County Dalin",
+    "ChiayiCounty-Xikou": "Chiayi County Xikou",
+    "Pingtung-Pingtung": "Pingtung Pingtung",
+    "Pingtung-Kaohsiung": "Pingtung Kaohsiung",
+    "Pingtung-Chaozhou": "Pingtung Chaozhou",
+    "Yilan-Yilan": "Yilan Yilan",
+    "Yilan-Luodong": "Yilan Luodong",
+    "Yilan-Suao": "Yilan Suao",
+    "Hualien-Hualien": "Hualien Hualien",
+    "Hualien-Ji'an": "Hualien Ji'an",
+    "Hualien-Xincheng": "Hualien Xincheng",
+    "Taitung-Taitung": "Taitung Taitung",
+    "Taitung-Beinan": "Taitung Beinan",
+    "Taitung-Chishang": "Taitung Chishang",
+    "Penghu-Magong": "Penghu Magong",
+    "Penghu-Xiyu": "Penghu Xiyu",
+    "Kinmen-Jinsha": "Kinmen Jinsha",
+    "Kinmen-Jincheng": "Kinmen Jincheng",
+    "Lienchiang-Nangan": "Lienchiang Nangan",
+    "Lienchiang-Beigan": "Lienchiang Beigan"
+  }
 };
 
 function t(key) {
