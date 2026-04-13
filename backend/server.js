@@ -571,6 +571,30 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+const MEDICAL_KNOWLEDGE = {
+  title: "醫學常識：heat-related illness",
+  levels: [
+    { number: 1, name: "熱痙攣" },
+    { number: 2, name: "熱衰竭" },
+    { number: 3, name: "中暑" }
+  ],
+  commonSymptoms: [
+    "腿部或腹部肌肉痙攣",
+    "大量出汗",
+    "口渴與疲倦",
+    "頭暈與虛弱",
+    "噁心或頭痛",
+    "皮膚濕冷黏膩",
+    "意識混亂或昏迷",
+    "皮膚灼熱乾燥或停止出汗",
+    "脈搏快速且體溫升高"
+  ]
+};
+
+app.get("/api/medical-knowledge", (req, res) => {
+  res.json(MEDICAL_KNOWLEDGE);
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });

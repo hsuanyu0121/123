@@ -2,6 +2,29 @@
 
 A minimal personal website chatbot powered by Google's Gemini API.
 
+## 醫學常識：Heat-Related Illness
+
+### 三個層級
+（1）熱痙攣  
+（2）熱衰竭  
+（3）中暑
+
+### Common Symptoms
+#### 熱痙攣
+- 腿部或腹部肌肉痙攣
+- 大量出汗
+- 口渴與疲倦
+
+#### 熱衰竭
+- 頭暈與虛弱
+- 噁心或頭痛
+- 皮膚濕冷黏膩
+
+#### 中暑
+- 意識混亂或昏迷
+- 皮膚灼熱乾燥或停止出汗
+- 脈搏快速且體溫升高
+
 ## Tech Stack
 - **Frontend**: Vanilla HTML/CSS/JavaScript
 - **Backend**: Node.js + Express
