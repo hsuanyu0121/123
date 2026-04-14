@@ -621,6 +621,11 @@ h3 {
   line-height: 1.6;
 }
 
+.cooling-card p,
+.cooling-card h3 {
+  margin-top: 14px;
+}
+
 .critical {
   border-color: #f2b7b0;
   background: linear-gradient(165deg, #fff6f5 0%, #ffffff 78%);
