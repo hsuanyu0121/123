@@ -1,6 +1,6 @@
 const API_URL = window.location.hostname === "localhost"
   ? "http://localhost:3000"
-  : "https://chatbot-api-py4s.onrender.com";
+  : "https://chatbot-api-cherry.onrender.com";
 
 const chatForm = document.getElementById("chatForm");
 const chatBox = document.getElementById("chatBox");
